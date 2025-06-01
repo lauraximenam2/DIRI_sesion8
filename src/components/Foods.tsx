@@ -1,0 +1,45 @@
+
+import './Foods.css'; 
+import { useMenu } from '../context/MenuContext'; 
+import { MenuItem } from '../entities/entities'; 
+
+interface FoodsProps {
+  onFoodSelected: (food: MenuItem) => void;
+}
+  
+  function Foods(props: FoodsProps) {
+    const { menuItems } = useMenu(); // Obtenemos menuItems del contexto
+
+    return (
+      <>
+        <h4 className="foodTitle">Carta</h4> 
+        <ul className="ulFoods">
+          {menuItems.map((item) => ( // Usamos menuItems del contexto
+            <li key={item.id} className="liFoods">
+              <img
+                className="foodImg"
+                src={`${import.meta.env.BASE_URL}images/${item.image}`}
+                alt={item.name}
+              />
+            <div className="foodItem">
+              <h5 className="foodName">{item.name}</h5> 
+              <p className="foodDesc">{item.desc}</p>
+              <p className="foodPrice">{item.price.toFixed(2)}$</p>
+            </div>
+              <button
+                className="selectFoodButton"
+                onClick={() => props.onFoodSelected(item)}
+                disabled={item.quantity <= 0}
+              >
+                {item.quantity > 0 ? 'Pedir este plato' : 'Agotado'}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  }
+  
+  
+  export default Foods;
+  
